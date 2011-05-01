@@ -1,0 +1,5 @@
+== gem homepage
+
+A rubygems plugin that adds the 'homepage' command that opens the homepage of a gem in your default browser.
+
+`gem homepage rails`
