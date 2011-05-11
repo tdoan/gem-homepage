@@ -22,12 +22,13 @@ class Gem::Commands::HomepageCommand < Gem::Command
       say "Usage: #{usage}"
       return terminate_interaction
     end
-    dep = Gem::Dependency.new(gemname)
-    $stderr.puts "Made dep"
-    spec = Gem.source_index.search(dep).first
-    $stderr.puts "spec: #{spec.inspect}"
+    if Gem::Specification.respond_to? :find_all_by_name
+      spec = Gem::Specification.find_all_by_name(gemname).first
+    else
+      dep = Gem::Dependency.new(gemname)
+      spec = Gem.source_index.search(dep).first
+    end
     if spec
-      $stderr.puts "found a spec"
       Launchy.open(spec.homepage)
     else
       say "The #{gemname.inspect} gem couldn't be found"
