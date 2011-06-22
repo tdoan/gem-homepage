@@ -22,11 +22,17 @@ class Gem::Commands::HomepageCommand < Gem::Command
       say "Usage: #{usage}"
       return terminate_interaction
     end
+    dep = Gem::Dependency.new(gemname,"> 0")
     if Gem::Specification.respond_to? :find_all_by_name
       spec = Gem::Specification.find_all_by_name(gemname).first
     else
-      dep = Gem::Dependency.new(gemname)
       spec = Gem.source_index.search(dep).first
+    end
+    if spec.nil?
+    #try remote if you didn't find it locally
+      fetcher = Gem::SpecFetcher.fetcher
+      t = fetcher.fetch(dep).first
+      spec = t.first if t
     end
     if spec
       Launchy.open(spec.homepage)
