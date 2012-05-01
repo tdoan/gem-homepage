@@ -35,7 +35,12 @@ class Gem::Commands::HomepageCommand < Gem::Command
       spec = t.first if t
     end
     if spec
-      Launchy.open(spec.homepage)
+      if spec.homepage and spec.homepage != ""
+        Launchy.open(spec.homepage)
+      else
+        say "No homepage listed in the gemspec for this gem."
+        return terminate_interaction
+      end
     else
       say "The #{gemname.inspect} gem couldn't be found"
       return terminate_interaction
