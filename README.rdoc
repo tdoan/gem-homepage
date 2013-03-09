@@ -2,4 +2,6 @@
 
 A rubygems plugin that adds the 'homepage' command that opens the homepage of a gem in your default browser.
 
+Recently updated to work with Rubygems 2.0.
+
 `gem homepage rails`
