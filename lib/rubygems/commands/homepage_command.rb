@@ -31,9 +31,14 @@ class Gem::Commands::HomepageCommand < Gem::Command
     if spec.nil?
     #try remote if you didn't find it locally
       fetcher = Gem::SpecFetcher.fetcher
-      t = fetcher.fetch(dep).first
+      if fetcher.respond_to? :spec_for_dependency
+        t = fetcher.spec_for_dependency(dep).first.last
+      else
+        t = fetcher.fetch(dep).first
+      end
       spec = t.first if t
     end
+
     if spec
       if spec.homepage and spec.homepage != ""
         Launchy.open(spec.homepage)
